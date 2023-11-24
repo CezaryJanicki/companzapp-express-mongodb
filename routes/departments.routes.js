@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Department = require('../models/department.model');
-import { DepartmentController } from '../controllers/departments.controller';
+const DepartmentController = require('../controllers/departments.controller');
 
 router.get('/departments', DepartmentController.getAll);
 router.get('/departments/random', DepartmentController.getRandom);

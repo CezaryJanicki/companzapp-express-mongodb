@@ -1,4 +1,4 @@
-const Employee = require('../employees.model.js');
+const Employee = require('../employees.model');
 const Department = require('../department.model');
 const expect = require('chai').expect;
 const mongoose = require('mongoose');
@@ -148,7 +148,7 @@ describe('Employee', () => {
       await Employee.deleteMany();
     });
   });
-  
+
   describe('Deleting data', () => {
     beforeEach(async () => {
       const cases = [

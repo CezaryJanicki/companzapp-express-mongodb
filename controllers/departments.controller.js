@@ -40,8 +40,9 @@ exports.getById = async (req, res) => {
       const { name } = req.body;
       const newDepartment = new Department({ name: name });
       await newDepartment.save();
-      res.json({ message: 'OK' });
-      res.json(newDepartment);
+      res.json({ message: 'OK',
+      newDepartment: newDepartment });
+
     } catch(err) {
       res.status(500).json({ message: err });
     }
@@ -53,8 +54,8 @@ exports.getById = async (req, res) => {
       const dep = await(Department.findById(req.params.id));
       if(dep) {
         await Department.updateOne({ _id: req.params.id }, { $set: { name: name }});
-        res.json({ message: 'OK' });
-        res.json(Department.findById(req.params.id));
+        res.json({ message: 'OK' ,
+        updatedDepartment: await Department.findById(req.params.id)});
       }
       else res.status(404).json({ message: 'Not found...' });
     }
@@ -65,15 +66,15 @@ exports.getById = async (req, res) => {
 
   exports.delete = async (req, res) => {
     try {
-      const dep = await(Department.findById(req.params.id));
-      if(dep) {
-        await Department.deleteOne({ _id: req.params.id });
-        res.json({ message: 'OK' });
-        res.json(dep)
+      const department = await Department.findByIdAndDelete(req.params.id);
+      if (!department) {
+        return res.status(404).json({ message: 'Not found' });
       }
-      else res.status(404).json({ message: 'Not found...' });
-    }
-    catch(err) {
-      res.status(500).json({ message: err });
+      res.json({
+        message: 'Department deleted successfully',
+        deletedDepartment: department
+      });
+    } catch (err) {
+      res.status(500).json(err);
     }
   }
